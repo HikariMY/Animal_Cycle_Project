@@ -173,7 +173,9 @@ messagebox.showinfo(
 root.destroy()
 
 # ======= เมนูหลัก =======
+# ======= เมนูหลัก =======
 eco = EcosystemGraph()
+eco_type_set = False
 
 valid_categories = {
     "ผู้ผลิต": "Producer",
@@ -203,50 +205,56 @@ while True:
             t = input("กรอกประเภท (บนบก / ในน้ำ): ").strip()
             if t in ["บนบก", "Terrestrial"]:
                 eco.set_ecosystem("Terrestrial")
+                eco_type_set = True
                 break
             elif t in ["ในน้ำ", "Aquatic"]:
                 eco.set_ecosystem("Aquatic")
+                eco_type_set = True
                 break
             else:
                 print("❗️ กรุณากรอกเฉพาะ 'บนบก' หรือ 'ในน้ำ' เท่านั้น")
 
-    elif choice == "2":
-        name = input("กรอกชื่อสิ่งมีชีวิต: ").strip()
-        while True:
-            print("ประเภท: ผู้ผลิต / กินพืช / กินเนื้อ / ย่อยสลาย")
-            cat_input = input("กรอกประเภท: ").strip()
-            if cat_input in valid_categories:
-                cat = valid_categories[cat_input]
-                break
-            else:
-                print("❗️ กรุณากรอกประเภทให้ถูกต้อง")
+    elif choice in ["2", "3", "4", "5", "6", "7"]:
+        if not eco_type_set:
+            print("❗️ กรุณากำหนดประเภทระบบนิเวศก่อน (เมนู 1)")
+            continue
 
-        eco.add_species(name, cat)
+        if choice == "2":
+            name = input("กรอกชื่อสิ่งมีชีวิต: ").strip()
+            while True:
+                print("ประเภท: ผู้ผลิต / กินพืช / กินเนื้อ / ย่อยสลาย")
+                cat_input = input("กรอกประเภท: ").strip()
+                if cat_input in valid_categories:
+                    cat = valid_categories[cat_input]
+                    break
+                else:
+                    print("❗️ กรุณากรอกประเภทให้ถูกต้อง")
+            eco.add_species(name, cat)
 
-    elif choice == "3":
-        old = input("กรอกชื่อสิ่งมีชีวิตเดิมที่ต้องการแก้ไข: ").strip()
-        new = input("กรอกชื่อใหม่: ").strip()
-        while True:
-            new_cat_input = input("กรอกประเภทใหม่ (ผู้ผลิต / กินพืช / กินเนื้อ / ย่อยสลาย): ").strip()
-            if new_cat_input in valid_categories:
-                new_cat = valid_categories[new_cat_input]
-                break
-            else:
-                print("❗️ กรุณากรอกประเภทให้ถูกต้อง")
-        eco.edit_species(old, new, new_cat)
+        elif choice == "3":
+            old = input("กรอกชื่อสิ่งมีชีวิตเดิมที่ต้องการแก้ไข: ").strip()
+            new = input("กรอกชื่อใหม่: ").strip()
+            while True:
+                new_cat_input = input("กรอกประเภทใหม่ (ผู้ผลิต / กินพืช / กินเนื้อ / ย่อยสลาย): ").strip()
+                if new_cat_input in valid_categories:
+                    new_cat = valid_categories[new_cat_input]
+                    break
+                else:
+                    print("❗️ กรุณากรอกประเภทให้ถูกต้อง")
+            eco.edit_species(old, new, new_cat)
 
-    elif choice == "4":
-        name = input("กรอกชื่อสิ่งมีชีวิตที่ต้องการลบ: ").strip()
-        eco.delete_species(name)
+        elif choice == "4":
+            name = input("กรอกชื่อสิ่งมีชีวิตที่ต้องการลบ: ").strip()
+            eco.delete_species(name)
 
-    elif choice == "5":
-        eco.auto_generate_relationship()
+        elif choice == "5":
+            eco.auto_generate_relationship()
 
-    elif choice == "6":
-        eco.analyze_ecosystem()
+        elif choice == "6":
+            eco.analyze_ecosystem()
 
-    elif choice == "7":
-        eco.draw_graph()
+        elif choice == "7":
+            eco.draw_graph()
 
     elif choice == "0":
         print("👋 ออกจากโปรแกรม...")
@@ -254,3 +262,4 @@ while True:
 
     else:
         print("❌ เลือกเมนูไม่ถูกต้อง กรุณาลองใหม่")
+
